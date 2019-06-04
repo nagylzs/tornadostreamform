@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Show progress bar on the client side</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-7s5uDGW3AHqw6xtJmNNtr+OBRJUlgkNJEo78P4b0yRw= sha512-nNo+yCHEyn0smMxSswnf/OnX6/KwJuZTlNZBjauKhTK0c+zT+q5JOCx0UFhXQ6rJR9jg6Es8gPuD2uZcYDLqSw==" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha256-KXn5puMvxCw+dAYznun+drMdG1IFl3agK0p/pqT9KAo= sha512-2e8qq0ETcfWRI4HJBzQiA3UoyFk6tbNyG+qSaIBZLyW9Xf3sWZHN/lxe9fTh1U45DpPf07yj94KsUHHWe4Yk1A==" crossorigin="anonymous"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.2.0/min/dropzone.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.2.0/min/dropzone.min.js"></script>
+    <script language="JavaScript">
+function init($) {
+    var myDropzone = new Dropzone("div#dropfiles", {
+        url: "/upload",
+        maxFilesize: 20000 // MB
+    });
+    myDropzone.on("uploadprogress", function (event, percent, bytesSent) {
+        $("#total_progress").css({width:percent+"%"});
+        $("#total_progress").html( (Math.round(percent*10)/10).toFixed(1) +"%");
+
+    });
+
+    $(document).on('dragover', function (e)
+    {
+        e.stopPropagation();
+        e.preventDefault();
+    });
+    $(document).on('drop', function (e)
+    {
+         e.stopPropagation();
+         e.preventDefault();
+    });
+
+
+};
+
+jQuery(document).ready( function() { init(jQuery); } );
+
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-8"  id="dropfiles">
+              <img src="static/cloud-upload.png"/>
+            </div>
+            <div class="col-sm-4" id="progress_text">
+                Drop some files on the cloud image.
+                If you are using firefox, then please
+                <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1227963">look at this bug report</a>.
+            </div>
+        </div>
+            <div class="col-sm-12">
+                <div class="progress">
+                    <div id="total_progress"
+                     class="progress-bar"
+                     role="progressbar"
+                     aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                    </div>
+                </div>
+            </div>
+    </div>
+</body>
+</html>
